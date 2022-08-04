@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:card300_server/models/game.dart';
@@ -41,7 +42,11 @@ void main() {
     }
   });
 
-  shelf_io.serve(handler, '0.0.0.0', 8080).then((server) {
+  var env = Platform.environment;
+
+  var port = env.entries.firstWhere((element) => element.key == 'PORT',
+      orElse: () => MapEntry('PORT', '8080'));
+  shelf_io.serve(handler, '0.0.0.0', int.parse(port.value)).then((server) {
     print('Serving at ws://${server.address.host}:${server.port}');
   });
 }
