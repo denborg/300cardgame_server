@@ -33,20 +33,20 @@ void main() {
   });
 
   var gameCleaner = Timer.periodic(Duration(seconds: 15), (timer) {
+    var idsToRemove = [];
     for (Game game in games.values) {
       var diff = DateTime.now().difference(game.lastAction);
       if (diff.inSeconds >= 300) {
         game.disconnectEveryone();
-        games.remove(game.id);
+        idsToRemove.add(game.id);
       }
     }
+    idsToRemove.forEach((id) => games.remove(id));
   });
 
   var env = Platform.environment;
 
-  var port = env.entries.firstWhere((element) => element.key == 'PORT',
-      orElse: () => MapEntry('PORT', '8080'));
-  shelf_io.serve(handler, '0.0.0.0', int.parse(port.value)).then((server) {
+  shelf_io.serve(handler, '0.0.0.0', 8080).then((server) {
     print('Serving at ws://${server.address.host}:${server.port}');
   });
 }
