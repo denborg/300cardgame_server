@@ -1,0 +1,55 @@
+numtoword = {
+	"6":"six",
+	"7":"seven",
+	"8":"eight",
+	"9":"nine",
+	"10":"ten",
+	'jack': 'jack',
+	'queen': 'queen',
+	'king': 'king',
+	'ace':'ace'
+}
+
+suits = ['clubs', 'spades', 'hearts', 'diamonds']
+
+values = ['6', '7', '8', '9', '10', 'jack', 'queen', 'king', 'ace']
+
+cards = []
+
+for suit in suits:
+	for value in values:
+		card_obj = {
+			'suit':suit,
+			'value': numtoword[value],
+			'multiplier': 1,
+			'endSelfScore': 0,
+            'givesCards': 0,
+            'cardGivingDirection': 0
+		}
+		if value in ('6', '7', '8', '9', '10'):
+			card_obj['score'] = int(value)
+		if value == 'queen':
+			card_obj['score'] = 30
+            card_obj['multiplier'] = 3
+        elif value == 'king':
+            card_obj['score'] = 4
+        elif value == 'jack':
+            card_obj['score'] = 2
+            card_obj['endSelfScore'] = -20
+        elif value == 'ace':
+            card_obj['score'] = 11
+        elif value == '6':
+            card_obj['givesCards'] = 2
+            card_obj['cardGivingDirection'] = 1
+        elif value == '7':
+            card_obj['givesCards'] = 1
+            card_obj['cardGivingDirection'] = -1
+        if value == 'king' and suit == 'spades':
+            card_obj['multiplier'] = 4
+            card_obj['score'] = 40
+            card_obj['givesCards'] = 4
+            card_obj['cardGivingDirection'] = 1
+		cards.append(card_obj)
+
+
+print(cards)
